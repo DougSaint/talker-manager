@@ -9,15 +9,12 @@ function isValidEmail(email) {
     if (!email) {
       return next({ status: 400, message: 'O campo "email" é obrigatório' });
     }
-  
     if (!isValidEmail(email)) {
       return next({ status: 400, message: 'O "email" deve ter o formato "email@email.com"' });
     }
-  
     if (!password) {
       return next({ status: 400, message: 'O campo "password" é obrigatório' });
     }
-  
     if (password.length < 6) {
       return next({ status: 400, message: 'O "password" deve ter pelo menos 6 caracteres' });
     }
@@ -26,4 +23,3 @@ function isValidEmail(email) {
   }
   
   module.exports = validateFields;
-  

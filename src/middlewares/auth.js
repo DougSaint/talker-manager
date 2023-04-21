@@ -1,5 +1,3 @@
-const { validTokens } = require('../tokenStore');
-
 const UNAUTHORIZED_STATUS = 401;
 
 function authenticationMiddleware(req, res, next) {
@@ -8,7 +6,6 @@ function authenticationMiddleware(req, res, next) {
   if (!token) {
     return res.status(UNAUTHORIZED_STATUS).json({ message: 'Token não encontrado' });
   }
-
 
   if (token.length !== 16) {
     return res.status(UNAUTHORIZED_STATUS).json({ message: 'Token inválido' });

@@ -1,3 +1,3 @@
 const validTokens = [];
 
-module.exports = validTokens
+module.exports = validTokens;

@@ -13,10 +13,18 @@ const readTalkers = async () => {
 
 const getTalker = async (id) => {
     const talkers = await readTalkers();
-    console.log(id)
-    const talker = talkers.find((t) => t.id == id)
+    const talker = talkers.find((t) => +t.id === +id);
     return talker;
-}
+};
+
+const writeTalkers = async (talkers) => {
+  const path = '../talker.json';
+  try {
+    await fs.writeFile(join(__dirname, path), JSON.stringify(talkers, null, 2));
+  } catch (error) {
+    console.error('Error writing to talker.json:', error);
+  }
+};
 
 const addTalker = async (newTalker) => {
   const talkers = await readTalkers();
@@ -29,12 +37,11 @@ const addTalker = async (newTalker) => {
   }
 };
 
-
 function generateRandomToken(length) {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let result = '';
 
-    for (let i = 0; i < length; i++) {
+    for (let i = 0; i < length; i += 1) {
         const randomIndex = Math.floor(Math.random() * characters.length);
         result += characters.charAt(randomIndex);
     }
@@ -46,5 +53,6 @@ module.exports = {
     readTalkers,
     getTalker,
     generateRandomToken,
-    addTalker
-}
+    addTalker,
+    writeTalkers,
+};

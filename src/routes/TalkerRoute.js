@@ -1,55 +1,64 @@
-const express = require("express");
-const utils = require("../utils/index");
-const authMiddleware = require('../middlewares/auth')
+const express = require('express');
+const utils = require('../utils/index');
+const authMiddleware = require('../middlewares/auth');
+
 const talkerRoute = express.Router();
-const validateTalker = require('../middlewares/validateTalker')
+const validateTalker = require('../middlewares/validateTalker');
 
-
-
-talkerRoute.get("/", async (_req, res) => {
-
+talkerRoute.get('/', async (_req, res) => {
   const talkers = await utils.readTalkers();
   return res.status(200).json(talkers);
 });
 
-talkerRoute.post("/", authMiddleware, validateTalker, async (req, res) => {
+talkerRoute.post('/', authMiddleware, validateTalker, async (req, res) => {
   const talkers = await utils.readTalkers();
     const user = {
       ...req.body,
-      id: talkers.length + 1
-    }
+      id: talkers.length + 1,
+    };
     
     await utils.addTalker(user);
     return res.status(201).json(user);
 });
 
-talkerRoute.get("/:id/", async (req, res) => {
+talkerRoute.get('/:id/', async (req, res) => {
   const { id } = req.params;
   const talker = await utils.getTalker(id);
   if (talker) {
     return res.status(200).json(talker);
-  } else {
+  } 
     return res.status(404).json({
-      message: "Pessoa palestrante não encontrada",
+      message: 'Pessoa palestrante não encontrada',
     });
+});
+
+talkerRoute.put('/:id/', authMiddleware, validateTalker, async (req, res) => {
+  const talkers = await utils.readTalkers();
+  const { id } = req.params;
+  const index = talkers.findIndex((talker) => +talker.id === +id);
+
+  if (index !== -1) {
+    talkers[index] = {
+      ...req.body,
+      id: +id,
+    };
+    await utils.writeTalkers(talkers);
+    res.status(200).json(talkers[index]);
+  } else {
+    res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
   }
 });
 
+talkerRoute.post('/login', async (_req, res) => res.status(201).json({}));
 
-talkerRoute.post("/login", async (req, res) => {
-  return res.status(201).json({});
-});
+talkerRoute.put('/:id', async (req, res) => 
+//  const { id } = req.params;
 
-talkerRoute.put("/:id", async (req, res) => {
-  const { id } = req.params;
+   res.status(200).json({}));
 
-  return res.status(200).json({});
-});
+talkerRoute.delete('/:id', async (req, res) => 
+//  const { id } = req.params;
 
-talkerRoute.delete("/:id", async (req, res) => {
-  const { id } = req.params;
-
-  return res.status(204).json();
-});
+   res.status(204).json());
 
 module.exports = talkerRoute;
