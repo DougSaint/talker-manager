@@ -49,16 +49,17 @@ talkerRoute.put('/:id/', authMiddleware, validateTalker, async (req, res) => {
   }
 });
 
-talkerRoute.post('/login', async (_req, res) => res.status(201).json({}));
-
 talkerRoute.put('/:id', async (req, res) => 
 //  const { id } = req.params;
 
    res.status(200).json({}));
 
-talkerRoute.delete('/:id', async (req, res) => 
-//  const { id } = req.params;
-
-   res.status(204).json());
+talkerRoute.delete('/:id', authMiddleware, async (req, res) => {
+  const { id } = req.params;
+  const talkers = await utils.readTalkers();
+  const deleteTalker = talkers.filter((talker) => +talker.id !== +id);
+  await utils.writeTalkers(deleteTalker);
+  res.status(204).json();
+});
 
 module.exports = talkerRoute;
