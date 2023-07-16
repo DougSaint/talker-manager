@@ -7,7 +7,7 @@ function authenticationMiddleware(req, res, next) {
     return res.status(UNAUTHORIZED_STATUS).json({ message: 'Token não encontrado' });
   }
 
-  if (token.length !== 16) {
+  if (token.length !== 16) { 
     return res.status(UNAUTHORIZED_STATUS).json({ message: 'Token inválido' });
   }
 

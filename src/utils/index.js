@@ -1,5 +1,4 @@
-const fs = require('fs').promises;
-const { join } = require('path');
+
 
 const readTalkers = async () => {
     const path = '../talker.json';

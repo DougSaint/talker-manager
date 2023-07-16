@@ -1,0 +1,3 @@
+class ClassName extends ParentClass {
+    
+}

@@ -34,7 +34,7 @@ app.use('/talker', talkersRoute);
 app.use((err, _req, res, _next) => {
   const { status, message } = err;
 
-  res.status(status).json({ message });
+ return res.status(status).json({ message });
 });
 
 app.listen(PORT, () => {
